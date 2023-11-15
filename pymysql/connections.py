@@ -264,7 +264,7 @@ class Connection:
             if not ssl:
                 ssl = {}
             if isinstance(ssl, dict):
-                for key in ["ca", "capath", "cert", "key", "cipher"]:
+                for key in ["ca", "capath", "cert", "key", "password", "cipher"]:
                     value = _config("ssl-" + key, ssl.get(key))
                     if value:
                         ssl[key] = value

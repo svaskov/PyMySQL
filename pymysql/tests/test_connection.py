@@ -574,7 +574,9 @@ class TestConnection(base.PyMySQLTestCase):
             assert create_default_context.called
             assert dummy_ssl_context.check_hostname
             assert dummy_ssl_context.verify_mode == ssl.CERT_REQUIRED
-            dummy_ssl_context.load_cert_chain.assert_called_with("cert", keyfile="key")
+            dummy_ssl_context.load_cert_chain.assert_called_with(
+                "cert", keyfile="key", password=None,
+            )
             dummy_ssl_context.set_ciphers.assert_called_with("cipher")
 
         dummy_ssl_context = mock.Mock(options=0)
@@ -592,7 +594,30 @@ class TestConnection(base.PyMySQLTestCase):
             assert create_default_context.called
             assert dummy_ssl_context.check_hostname
             assert dummy_ssl_context.verify_mode == ssl.CERT_REQUIRED
-            dummy_ssl_context.load_cert_chain.assert_called_with("cert", keyfile="key")
+            dummy_ssl_context.load_cert_chain.assert_called_with(
+                "cert", keyfile="key", password=None,
+            )
+            dummy_ssl_context.set_ciphers.assert_not_called
+
+        dummy_ssl_context = mock.Mock(options=0)
+        with mock.patch("pymysql.connections.Connection.connect"), mock.patch(
+            "pymysql.connections.ssl.create_default_context",
+            new=mock.Mock(return_value=dummy_ssl_context),
+        ) as create_default_context:
+            pymysql.connect(
+                ssl={
+                    "ca": "ca",
+                    "cert": "cert",
+                    "key": "key",
+                    "password": "password",
+                },
+            )
+            assert create_default_context.called
+            assert dummy_ssl_context.check_hostname
+            assert dummy_ssl_context.verify_mode == ssl.CERT_REQUIRED
+            dummy_ssl_context.load_cert_chain.assert_called_with(
+                "cert", keyfile="key", password="password",
+            )
             dummy_ssl_context.set_ciphers.assert_not_called
 
         dummy_ssl_context = mock.Mock(options=0)
@@ -622,7 +647,9 @@ class TestConnection(base.PyMySQLTestCase):
             assert create_default_context.called
             assert not dummy_ssl_context.check_hostname
             assert dummy_ssl_context.verify_mode == ssl.CERT_NONE
-            dummy_ssl_context.load_cert_chain.assert_called_with("cert", keyfile="key")
+            dummy_ssl_context.load_cert_chain.assert_called_with(
+                "cert", keyfile="key", password=None,
+            )
             dummy_ssl_context.set_ciphers.assert_not_called
 
         for ssl_verify_cert in (True, "1", "yes", "true"):
@@ -640,7 +667,7 @@ class TestConnection(base.PyMySQLTestCase):
                 assert not dummy_ssl_context.check_hostname
                 assert dummy_ssl_context.verify_mode == ssl.CERT_REQUIRED
                 dummy_ssl_context.load_cert_chain.assert_called_with(
-                    "cert", keyfile="key"
+                    "cert", keyfile="key", password=None,
                 )
                 dummy_ssl_context.set_ciphers.assert_not_called
 
@@ -659,7 +686,7 @@ class TestConnection(base.PyMySQLTestCase):
                 assert not dummy_ssl_context.check_hostname
                 assert dummy_ssl_context.verify_mode == ssl.CERT_NONE
                 dummy_ssl_context.load_cert_chain.assert_called_with(
-                    "cert", keyfile="key"
+                    "cert", keyfile="key", password=None,
                 )
                 dummy_ssl_context.set_ciphers.assert_not_called
 
@@ -682,7 +709,7 @@ class TestConnection(base.PyMySQLTestCase):
                         ssl.CERT_REQUIRED if ssl_ca is not None else ssl.CERT_NONE
                     ), (ssl_ca, ssl_verify_cert)
                     dummy_ssl_context.load_cert_chain.assert_called_with(
-                        "cert", keyfile="key"
+                        "cert", keyfile="key", password=None,
                     )
                     dummy_ssl_context.set_ciphers.assert_not_called
 
@@ -700,7 +727,29 @@ class TestConnection(base.PyMySQLTestCase):
             assert create_default_context.called
             assert dummy_ssl_context.check_hostname
             assert dummy_ssl_context.verify_mode == ssl.CERT_NONE
-            dummy_ssl_context.load_cert_chain.assert_called_with("cert", keyfile="key")
+            dummy_ssl_context.load_cert_chain.assert_called_with(
+                "cert", keyfile="key", password=None,
+            )
+            dummy_ssl_context.set_ciphers.assert_not_called
+
+        dummy_ssl_context = mock.Mock(options=0)
+        with mock.patch("pymysql.connections.Connection.connect"), mock.patch(
+            "pymysql.connections.ssl.create_default_context",
+            new=mock.Mock(return_value=dummy_ssl_context),
+        ) as create_default_context:
+            pymysql.connect(
+                ssl_ca="ca",
+                ssl_cert="cert",
+                ssl_key="key",
+                ssl_key_password="password",
+                ssl_verify_identity=True,
+            )
+            assert create_default_context.called
+            assert dummy_ssl_context.check_hostname
+            assert dummy_ssl_context.verify_mode == ssl.CERT_NONE
+            dummy_ssl_context.load_cert_chain.assert_called_with(
+                "cert", keyfile="key", password="password",
+            )
             dummy_ssl_context.set_ciphers.assert_not_called
 
         dummy_ssl_context = mock.Mock(options=0)
