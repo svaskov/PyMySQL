@@ -575,7 +575,9 @@ class TestConnection(base.PyMySQLTestCase):
             assert dummy_ssl_context.check_hostname
             assert dummy_ssl_context.verify_mode == ssl.CERT_REQUIRED
             dummy_ssl_context.load_cert_chain.assert_called_with(
-                "cert", keyfile="key", password=None,
+                "cert",
+                keyfile="key",
+                password=None,
             )
             dummy_ssl_context.set_ciphers.assert_called_with("cipher")
 
@@ -595,7 +597,9 @@ class TestConnection(base.PyMySQLTestCase):
             assert dummy_ssl_context.check_hostname
             assert dummy_ssl_context.verify_mode == ssl.CERT_REQUIRED
             dummy_ssl_context.load_cert_chain.assert_called_with(
-                "cert", keyfile="key", password=None,
+                "cert",
+                keyfile="key",
+                password=None,
             )
             dummy_ssl_context.set_ciphers.assert_not_called
 
@@ -616,7 +620,9 @@ class TestConnection(base.PyMySQLTestCase):
             assert dummy_ssl_context.check_hostname
             assert dummy_ssl_context.verify_mode == ssl.CERT_REQUIRED
             dummy_ssl_context.load_cert_chain.assert_called_with(
-                "cert", keyfile="key", password="password",
+                "cert",
+                keyfile="key",
+                password="password",
             )
             dummy_ssl_context.set_ciphers.assert_not_called
 
@@ -648,7 +654,9 @@ class TestConnection(base.PyMySQLTestCase):
             assert not dummy_ssl_context.check_hostname
             assert dummy_ssl_context.verify_mode == ssl.CERT_NONE
             dummy_ssl_context.load_cert_chain.assert_called_with(
-                "cert", keyfile="key", password=None,
+                "cert",
+                keyfile="key",
+                password=None,
             )
             dummy_ssl_context.set_ciphers.assert_not_called
 
@@ -667,7 +675,9 @@ class TestConnection(base.PyMySQLTestCase):
                 assert not dummy_ssl_context.check_hostname
                 assert dummy_ssl_context.verify_mode == ssl.CERT_REQUIRED
                 dummy_ssl_context.load_cert_chain.assert_called_with(
-                    "cert", keyfile="key", password=None,
+                    "cert",
+                    keyfile="key",
+                    password=None,
                 )
                 dummy_ssl_context.set_ciphers.assert_not_called
 
@@ -686,7 +696,9 @@ class TestConnection(base.PyMySQLTestCase):
                 assert not dummy_ssl_context.check_hostname
                 assert dummy_ssl_context.verify_mode == ssl.CERT_NONE
                 dummy_ssl_context.load_cert_chain.assert_called_with(
-                    "cert", keyfile="key", password=None,
+                    "cert",
+                    keyfile="key",
+                    password=None,
                 )
                 dummy_ssl_context.set_ciphers.assert_not_called
 
@@ -709,7 +721,9 @@ class TestConnection(base.PyMySQLTestCase):
                         ssl.CERT_REQUIRED if ssl_ca is not None else ssl.CERT_NONE
                     ), (ssl_ca, ssl_verify_cert)
                     dummy_ssl_context.load_cert_chain.assert_called_with(
-                        "cert", keyfile="key", password=None,
+                        "cert",
+                        keyfile="key",
+                        password=None,
                     )
                     dummy_ssl_context.set_ciphers.assert_not_called
 
@@ -728,7 +742,9 @@ class TestConnection(base.PyMySQLTestCase):
             assert dummy_ssl_context.check_hostname
             assert dummy_ssl_context.verify_mode == ssl.CERT_NONE
             dummy_ssl_context.load_cert_chain.assert_called_with(
-                "cert", keyfile="key", password=None,
+                "cert",
+                keyfile="key",
+                password=None,
             )
             dummy_ssl_context.set_ciphers.assert_not_called
 
@@ -748,7 +764,9 @@ class TestConnection(base.PyMySQLTestCase):
             assert dummy_ssl_context.check_hostname
             assert dummy_ssl_context.verify_mode == ssl.CERT_NONE
             dummy_ssl_context.load_cert_chain.assert_called_with(
-                "cert", keyfile="key", password="password",
+                "cert",
+                keyfile="key",
+                password="password",
             )
             dummy_ssl_context.set_ciphers.assert_not_called
 
