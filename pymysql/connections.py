@@ -393,7 +393,9 @@ class Connection:
             else:
                 ctx.verify_mode = ssl.CERT_NONE if hasnoca else ssl.CERT_REQUIRED
         if "cert" in sslp:
-            ctx.load_cert_chain(sslp["cert"], keyfile=sslp.get("key"), password=sslp.get("password"))
+            ctx.load_cert_chain(
+                sslp["cert"], keyfile=sslp.get("key"), password=sslp.get("password")
+            )
         if "cipher" in sslp:
             ctx.set_ciphers(sslp["cipher"])
         ctx.options |= ssl.OP_NO_SSLv2
